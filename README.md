@@ -1,0 +1,1 @@
+# fightcade-plugin-spectate-with-lua
