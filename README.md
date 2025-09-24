@@ -5,7 +5,7 @@ This plugin adds a “Spectate With LUA” option to Fightcade’s context menu,
 ## Contents
 
 - `spectator.lua`: Lua script for FBNeo that reads and maps player data from memory.  
-- `plugin.js`: Plugin for Fightcade Plugin Manager that injects the context menu and launches FBNeo.
+- `spectateWithLua.js`: Plugin for Fightcade Plugin Manager that injects the context menu and launches FBNeo.
 ## What the Lua Script Tracks
 
 - Player character selection  
