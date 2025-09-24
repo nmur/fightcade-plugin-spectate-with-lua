@@ -3,8 +3,8 @@ const config = require('./config.json');
 
 module.exports = (FCADE) => { runPlugin(FCADE) };
 
-const fbneoPath = "C:\\Users\\nmur\\Documents\\Fightcade\\emulator\\fbneo\\fcadefbneo.exe";
-const luaPath = "--lua C:\\Users\\nmur\\Documents\\Fightcade\\emulator\\fbneo\\fbneo-training-mode\\3rd_spectator.lua";
+const fbneoPath = config.fbneoPath;
+const luaPath = "--lua "+ __dirname + "/spectator.lua";
 
 const runPlugin = (FCADE) => {
     // Override the Playing context menu 
