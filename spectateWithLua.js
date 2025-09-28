@@ -1,37 +1,49 @@
+const path = require('path');
 const { exec } = require('child_process');
 const config = require('./config.json');
 
 module.exports = (FCADE) => { runPlugin(FCADE) };
 
-const fbneoPath = "C:\\Users\\nmur\\Documents\\Fightcade\\emulator\\fbneo\\fcadefbneo.exe";
-const luaPath = "--lua C:\\Users\\nmur\\Documents\\Fightcade\\emulator\\fbneo\\fbneo-training-mode\\3rd_spectator.lua";
+const defaultConfig = {
+    fbneoPath: "../../../../../emulator/fbneo/fcadefbneo.exe",
+    luaPath: "../../../../../emulator/fbneo/3rd_training_lua-master/3rd_spectator.lua"
+};
 
 const runPlugin = (FCADE) => {
-    // Override the Playing context menu 
-    FCADE.$options.components["Channel"].components.UsersList.methods.showMatchContextMenu = function(e, t, n) {
+    if (!config.spectateWithLua) {
+        config.spectateWithLua = defaultConfig
+    }
+
+    overridePlayingContextMenu(FCADE);
+}
+
+const overridePlayingContextMenu = (FCADE) => {
+    FCADE.$options.components["Channel"].components.UsersList.methods.showMatchContextMenu = function (e, t, n) {
         this.channel.spectators && (this.contextMenuData = {
             user: e.player1,
             position: t,
             limitRect: n,
             callback: () => {
-                spectateWithLua(this.channel.gameid, e.quarkId, e.port)
+                spectateWithLua(this.channel.gameid, e.quarkId, e.port);
             },
             items: [{
                 id: "spectate",
                 text: "Spectate With LUA"
             }]
         },
-        this.$emit("show-context-menu", this.contextMenuData))
-    }
-
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "F11") {
-            exec(commandStr, (error, stdout, stderr) => {});
-        }
-    });
+        this.$emit("show-context-menu", this.contextMenuData));
+    };
 }
 
 const spectateWithLua = (gameId, quarkId, port) => {
-    const commandStr = fbneoPath + " " + luaPath + " " + "quark:stream," + gameId + "," + quarkId + ".2," + port;
-    exec(commandStr, (error, stdout, stderr) => {});
+    exec(getSpectateCommandString(gameId, quarkId, port), (_error, _stdout, _stderr) => {});
+};
+
+const getSpectateCommandString = (gameId, quarkId, port) => {
+    return [
+        path.resolve(__dirname, config.spectateWithLua.fbneoPath),
+        '--lua',
+        path.resolve(__dirname, config.spectateWithLua.luaPath),
+        `quark:stream,${gameId},${quarkId}.2,${port}`
+    ].join(' ');
 }
