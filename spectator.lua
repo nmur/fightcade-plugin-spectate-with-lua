@@ -162,15 +162,12 @@ while true do
     local phaseText   = getPhaseText(gamePhase)
     
     local currentOutput = string.format(
-        "P1: Character: %s (0x%02X), Super: %s (%d), Color: %s (%d)\n" ..
-        "P2: Character: %s (0x%02X), Super: %s (%d), Color: %s (%d)\n" ..
-        "Game Phase: 0x%02X (%s)\n" ..
-        "High Parry: %d\n" ..
-        "Low Parry: %d",
-        p1Character, p1addr, p1SuperArt, p1super, p1ColorText, p1color,
-        p2Character, p2addr, p2SuperArt, p2super, p2ColorText, p2color,
-        gamePhase, phaseText,
-        high_parry, low_parry
+        "P1\n%s\n%s\n%s\n" ..
+        "P2\n%s\n%s\n%s\n" ..
+        "Game Phase: 0x%02X (%s)",
+        p1Character, p1SuperArt, p1ColorText,
+        p2Character, p2SuperArt, p2ColorText,
+        gamePhase, phaseText
     )
     
     if currentOutput ~= previousOutput then
